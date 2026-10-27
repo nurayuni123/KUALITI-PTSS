@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Kualiti PTSS – Pengurusan</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">🏛️</span>
+      <div>
+        <div class="topbar-title">Dashboard Dokumen Kualiti PTSS</div>
+        <div class="topbar-sub">Politeknik Tuanku Syed Sirajuddin</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge-admin">🔐 Unit Kualiti</span>
+      <button id="btn-logout" class="btn btn-sm btn-outline">Log Keluar</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- Summary Cards -->
+    <section class="summary-grid">
+      <div class="card summary-card">
+        <div class="card-icon">📄</div>
+        <div class="card-body">
+          <div class="card-label">Jumlah Dokumen Aktif</div>
+          <div class="card-value" id="sum-total">–</div>
+          <div class="card-sub">SOP, Manual & Borang</div>
+        </div>
+      </div>
+      <div class="card summary-card">
+        <div class="card-icon">⚠️</div>
+        <div class="card-body">
+          <div class="card-label">Dokumen Hampir Tamat Tempoh</div>
+          <div class="card-value text-warn" id="sum-expiring">–</div>
+          <div class="card-sub">Dalam tempoh 30 hari</div>
+        </div>
+      </div>
+      <div class="card summary-card">
+        <div class="card-icon">🔍</div>
+        <div class="card-body">
+          <div class="card-label">Dalam Semakan</div>
+          <div class="card-value text-info" id="sum-review">–</div>
+          <div class="card-sub">Menunggu kelulusan</div>
+        </div>
+      </div>
+      <div class="card summary-card">
+        <div class="card-icon">🔴</div>
+        <div class="card-body">
+          <div class="card-label">Tindakan Pembetulan Terbuka</div>
+          <div class="card-value text-danger" id="sum-corrective">–</div>
+          <div class="card-sub">Belum diselesaikan</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Actions Bar -->
+    <section class="card actions-card">
+      <div class="actions-bar">
+        <button id="btn-upload" class="btn btn-primary">📤 Muat Naik Dokumen</button>
+        <div class="filter-row">
+          <input type="text" id="adm-search" placeholder="🔍 Cari dokumen..." class="input-search"/>
+          <select id="adm-filter-cat" class="input-select">
+            <option value="">Semua Kategori</option>
+            <option value="SOP">SOP</option>
+            <option value="Manual">Manual</option>
+            <option value="Borang">Borang</option>
+          </select>
+          <select id="adm-filter-status" class="input-select">
+            <option value="">Semua Status</option>
+            <option value="Aktif">Aktif</option>
+            <option value="Semakan">Dalam Semakan</option>
+            <option value="Tamat">Tamat Tempoh</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Document Table -->
+    <section class="card table-card">
+      <div class="card-header">
+        <h2>📋 Senarai Dokumen Kualiti</h2>
+      </div>
+      <div class="table-wrap">
+        <table id="adm-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Nama Dokumen</th>
+              <th>Kategori</th>
+              <th>Versi</th>
+              <th>Pemegang Dokumen</th>
+              <th>Tarikh Kemaskini</th>
+              <th>Tarikh Luput</th>
+              <th>Status</th>
+              <th>Tindakan</th>
+            </tr>
+          </thead>
+          <tbody id="adm-tbody"></tbody>
+        </table>
+        <div id="adm-empty" class="empty-state hidden">Tiada dokumen dijumpai.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    © 2025 Politeknik Tuanku Syed Sirajuddin &nbsp;|&nbsp; Unit Kualiti PTSS
+  </footer>
+
+  <!-- Upload / Edit Modal -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">📤 Muat Naik Dokumen</h3>
+        <button id="modal-close" class="modal-close">✕</button>
+      </div>
+      <form id="doc-form">
+        <input type="hidden" id="doc-id"/>
+        <div class="form-group">
+          <label>Nama Dokumen *</label>
+          <input type="text" id="doc-name" required placeholder="Contoh: SOP Kawalan Dokumen"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Kategori *</label>
+            <select id="doc-cat" required>
+              <option value="">-- Pilih --</option>
+              <option value="SOP">SOP</option>
+              <option value="Manual">Manual</option>
+              <option value="Borang">Borang</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Versi *</label>
+            <input type="text" id="doc-ver" required placeholder="Contoh: v1.0"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Pemegang Dokumen *</label>
+          <input type="text" id="doc-holder" required placeholder="Nama pegawai / unit"/>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tarikh Berkuat Kuasa *</label>
+            <input type="date" id="doc-date" required/>
+          </div>
+          <div class="form-group">
+            <label>Tarikh Luput *</label>
+            <input type="date" id="doc-expiry" required/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Status *</label>
+          <select id="doc-status" required>
+            <option value="Aktif">Aktif</option>
+            <option value="Semakan">Dalam Semakan</option>
+            <option value="Tamat">Tamat Tempoh</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fail Dokumen (PDF/Word/Excel)</label>
+          <input type="file" id="doc-file" accept=".pdf,.doc,.docx,.xls,.xlsx"/>
+          <div id="doc-file-current" class="file-current hidden"></div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="modal-cancel" class="btn btn-secondary">Batal</button>
+          <button type="submit" class="btn btn-primary" id="modal-save">💾 Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div id="delete-overlay" class="modal-overlay hidden">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h3>🗑️ Padam Dokumen</h3>
+        <button id="delete-close" class="modal-close">✕</button>
+      </div>
+      <p id="delete-msg" style="margin: 1rem 0; color: #57606a;">Adakah anda pasti mahu memadam dokumen ini?</p>
+      <div class="modal-actions">
+        <button id="delete-cancel" class="btn btn-secondary">Batal</button>
+        <button id="delete-confirm" class="btn btn-danger">🗑️ Ya, Padam</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

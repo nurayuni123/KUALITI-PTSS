@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paparan Awam – Dokumen Kualiti PTSS</title>
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-logo">🏛️</span>
+      <div>
+        <div class="topbar-title">Dashboard Dokumen Kualiti PTSS</div>
+        <div class="topbar-sub">Politeknik Tuanku Syed Sirajuddin</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="badge-readonly">👁️ Paparan Sahaja</span>
+      <a href="index.html" class="btn btn-sm btn-outline">🔐 Log Masuk</a>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- Summary Cards -->
+    <section class="summary-grid">
+      <div class="card summary-card">
+        <div class="card-icon">📄</div>
+        <div class="card-body">
+          <div class="card-label">Jumlah Dokumen Aktif</div>
+          <div class="card-value" id="pub-total">–</div>
+          <div class="card-sub">SOP, Manual & Borang</div>
+        </div>
+      </div>
+      <div class="card summary-card">
+        <div class="card-icon">⚠️</div>
+        <div class="card-body">
+          <div class="card-label">Dokumen Hampir Tamat Tempoh</div>
+          <div class="card-value text-warn" id="pub-expiring">–</div>
+          <div class="card-sub">Dalam tempoh 30 hari</div>
+        </div>
+      </div>
+      <div class="card summary-card">
+        <div class="card-icon">🔍</div>
+        <div class="card-body">
+          <div class="card-label">Dalam Semakan</div>
+          <div class="card-value text-info" id="pub-review">–</div>
+          <div class="card-sub">Menunggu kelulusan</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Document List -->
+    <section class="card table-card">
+      <div class="card-header">
+        <h2>📋 Senarai Dokumen Kualiti</h2>
+        <div class="filter-row">
+          <input type="text" id="pub-search" placeholder="🔍 Cari dokumen..." class="input-search"/>
+          <select id="pub-filter-cat" class="input-select">
+            <option value="">Semua Kategori</option>
+            <option value="SOP">SOP</option>
+            <option value="Manual">Manual</option>
+            <option value="Borang">Borang</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="pub-table">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Nama Dokumen</th>
+              <th>Kategori</th>
+              <th>Versi</th>
+              <th>Tarikh Kemaskini</th>
+              <th>Tarikh Luput</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="pub-tbody"></tbody>
+        </table>
+        <div id="pub-empty" class="empty-state hidden">Tiada dokumen dijumpai.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    © 2025 Politeknik Tuanku Syed Sirajuddin &nbsp;|&nbsp; Unit Kualiti PTSS
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/public.js"></script>
+</body>
+</html>
